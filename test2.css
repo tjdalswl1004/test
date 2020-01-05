@@ -1,0 +1,44 @@
+	background-image: url('https://img.huffingtonpost.com/asset/5d70682724000032007549cf.jpeg?ops=scalefit_630_noupscale');
+	background-size: cover;
+	background-position: center;
+	width: 400px;
+	margin: auto;
+	.mytitle{
+		color: white;
+		font-weight: 900;
+		text-decoration: underline;
+		font-size: 30px;
+	}
+	.mytitle1{
+		color: yellow;
+	}
+	#ID-P{
+		color: gray;
+	}
+	#PW-P{
+		color: gray;
+	}
+	.mytile > h1 {
+		margin: 0 0 5px 0;
+	}
+	.mytile1 > h3 {
+		margin: 5px 0 0 0;
+	}
+	.margin-padding-test {
+		color: white;			
+		width: 400px;
+		height: 200px;
+		background-color: yellow;
+		border-radius: 50px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: column
+		justify-content: center;
+		background-image: url('http://www.forest.go.kr/newkfsweb/cmm/fms/FileDown.do?atchFileId=FILE_000000010008639&fileSn=0');
+		background-size: cover;
+		background-position: center;
+	}
+	* {
+		font-family: 'Nanum Gothic', sans-serif;
+	}
