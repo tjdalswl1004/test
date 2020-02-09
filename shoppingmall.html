@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>shopping mall</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script&display=swap" rel="stylesheet"> 
+
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<!-- JS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css?family=Cute+Font|Poor+Story&display=swap" rel="stylesheet">
+
+
+
+	<style>
+		.myproduct {
+			color: white;
+			text-align: center;
+			background-image: url('https://images.unsplash.com/photo-1578730170523-5b38283b0951?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80');
+			background-size: cover;
+			background-position: center;
+			width: 300px;
+			height: 200px;
+			border-radius: 10px;
+
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+		.wrap {
+			width: 300px;
+			margin: 50px auto 0 auto;
+		}
+
+		.btn btn-primary {
+			color:blue;
+			width: 300px;
+			margin: 50px auto 0 auto;
+		}
+
+	</style>
+
+	<script>
+		$(document).ready(function(){
+        $('#orders-box').html('');
+        listing();
+      });
+
+      function listing() {
+        $.ajax({
+          type: "GET",
+          url: "/order",
+          data: {},
+          success: function(response){
+             if (response['result'] == 'success') {
+               let orders = response['orders'];
+               console.log(orders);
+               for (let i = 0; i < orders.length; i++) {
+                 make_card(orders[i]['name'],orders[i]['count'],orders[i]['address'],orders[i]['phone'])
+               }
+             } else {
+               alert('기사를 받아오지 못했습니다');
+             }
+          }
+        })
+      }
+
+      function make_card(name,count,address,phone) {
+        let temp_html = '<tr>\
+            <td>'+name+'</td>\
+            <td>'+count+'</td>\
+            <td>'+address+'</td>\
+            <td>'+phone+'</td>\
+          </tr>';
+        $('#orders-box').append(temp_html);
+      }
+
+	</script>
+
+	<script>
+	function isCellPhone(p) {
+        var regExp = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})[-][0-9]{3,4}[-][0-9]{4}$/;
+        return regExp.test(p);
+      }
+
+		function order() {
+        let name = $('#order_name').val();
+        let count = $('#order_count').val();
+        let address = $('#order_address').val();
+        let phone = $('#order_phone').val();
+
+        if (name == ''){
+          alert('이름을 입력해주세요')
+          $('#order_name').focus()
+          return
+        } else if (count == ''){
+          alert('수량을 입력해주세요')
+          $('#order_count').focus()
+          return
+        } else if (address == ''){
+          alert('주소를 입력해주세요')
+          $('#order_address').focus()
+          return
+        } else if (phone == ''){
+          alert('휴대폰번호를 입력해주세요')
+          $('#order_phone').focus()
+          return
+        } else if (!isCellPhone(phone)) {
+          alert('휴대폰번호 입력 형식이 틀립니다. \n 010-0000-0000으로 입력해주세요')
+          return
+        }
+
+        $.ajax({
+          type: "POST",
+          url: "/order",
+          data: { name_receive:name, count_receive:count, address_receive:address, phone_receive:phone },
+          success: function(response){
+            if(response['result'] == 'success'){
+              alert('주문 완료!');
+              window.location.reload();
+            }
+          }
+        })
+      }
+	</script>
+
+
+	<script>
+		function test_request() {
+		$.ajax({
+    type: "POST",
+    url: "/new_movie",
+    data: {username_receive:'성민지', count_receive: 'Two', address_receive: '서울시 한천로 713', phonenumber_receive: '01056866466'},
+    success: function(response){
+        console.log(response)
+    }
+  })
+		}
+	</script>
+
+
+
+
+
+</head>
+<body>
+	<div class="wrap">
+		<div class="myproduct">
+		</div>
+		<p>
+			<h1><strong>흙을 팝니다</strong></h1><h3>가격:3000원/210g</h3> 
+			<p style="margin-top"=40px>이 흙은 신비한 힘을 가지고 있어요. 손바닥위에 하트를 만들어서 씨앗을 심으면
+				뭐든지 잘 자란답니다. 물이나 햇빛을 주지 않아도 되요. 어떄요 신기하죠?<p/>
+				<p>
+					<div class="input-group flex-nowrap">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="addon-wrapping">주문자이름</span>
+						</div>
+						<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+					</div>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<label class="input-group-text" for="inputGroupSelect01">수량</label>
+						</div>
+						<select class="custom-select" id="inputGroupSelect01">
+							<option selected>Choose...</option>
+							<option value="1">One</option>
+							<option value="2">Two</option>
+							<option value="3">Three</option>
+						</select>
+					</div>
+
+					<div class="input-group flex-nowrap">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="addon-wrapping">주소</span>
+						</div>
+						<input type="text" class="form-control" placeholder="Address" aria-label="Username" aria-describedby="addon-wrapping">
+					</div>
+					<div class="input-group flex-nowrap">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="addon-wrapping">전화번호</span>
+						</div>
+						<input type="text" class="form-control" placeholder="Phone Number" aria-label="Username" aria-describedby="addon-wrapping">
+					</div>
+				</p>
+
+				<button type="button" class="btn btn-danger" onclick="order()">진짜주문하기</button>
+	</div>
+			</body>
+			</html>
